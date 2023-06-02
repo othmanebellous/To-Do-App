@@ -1,0 +1,146 @@
+body{
+    height: 100vh;
+    background-image: url(images/nature.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+main{
+    flex-basis: 1280px;
+}
+
+.tab:not(:first-child), .tab .icon{
+    color: gray;
+}
+
+.tab:first-child::after{
+    content: "";
+    position: absolute;
+    width: 86%;
+    border-bottom: 1px solid #dfdfdf;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 0.3s ease-in;
+    }
+
+.tab.available{
+    cursor: pointer;
+    transition: 0.3s ease-out;
+    color: #000;
+}
+
+.available:hover, .active{
+    background-color: #f5f6f8;
+    transition: 0.3s ease-in;
+}
+
+.available::before{
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 0;
+    top: 0;
+    left: 0;
+    background-color: #3a4af9;
+    transition: 0.3s ease-out;
+    }
+
+.available:hover::before, .active::before{
+    height: 100%;
+    transition: 0.3s ease-in;
+}
+
+.available .icon{
+    color: #0D6EFD;
+}
+
+.available:hover .icon, .active .icon{
+    color: #7453d3;
+    transition: 0.3s ease-in;
+}
+
+.bi-person{
+    background-color: #f4f4f4;
+}
+
+.header{
+    background-image: linear-gradient(to right, #823fa1 , #6248e7);
+}
+
+.title {
+    font-size: 53px;
+}
+.search-form {
+    background-color: #543dc7;
+    width: fit-content;
+}
+.input-wrapper{
+    width: 0;
+    transition:width 0.5s ease-in;
+}
+.search-form:hover .input-wrapper{
+    width: 100%;
+    transition:width 0.5s ease-out;
+}
+.search-input{
+    opacity: 0;
+    width: 100%;
+    transition:opacity 0.5s ease-out;
+}
+
+.search-input::placeholder{
+    color: #fff;
+}
+
+.search-form:hover .search-input{
+    opacity: 1;
+    transition:opacity 0.5s ease-in;
+}
+
+.search-input:focus{
+    outline: 0;
+    color: #fff;
+}
+
+@media (max-width: 850px) {
+    #body{
+        display: block !important;
+    }
+    .row.bg-white{
+        margin: 0 !important;
+        height: 100%;
+    }
+    .tab-title, .username {
+        display: none;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start !important;
+        padding-top: 0 !important;
+        padding-bottom: 13px !important;
+      }
+
+      .infos{
+        padding-top: 0 !important;
+      }
+
+      .title {
+        font-size: 44px;
+      }
+
+      .search-form{
+        align-self: flex-end;
+        margin-top: 21px;
+        width: 100%;
+      }
+
+      .search-form:hover .input-wrapper, .input-wrapper{
+        width: 100%;
+    }
+
+    .search-input{
+        opacity: 1;
+    }
+}
