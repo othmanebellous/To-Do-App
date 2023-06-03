@@ -80,13 +80,13 @@ main{
     transition:width 0.5s ease-in;
 }
 .search-form:hover .input-wrapper{
-    width: 100%;
+    width: 210px;
     transition:width 0.5s ease-out;
 }
 .search-input{
     opacity: 0;
     width: 100%;
-    transition:opacity 0.5s ease-out;
+    transition: 0.5s ease-in;
 }
 
 .search-input::placeholder{
@@ -95,7 +95,7 @@ main{
 
 .search-form:hover .search-input{
     opacity: 1;
-    transition:opacity 0.5s ease-in;
+    transition: 0.5s ease-out;
 }
 
 .search-input:focus{
