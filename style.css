@@ -9,9 +9,9 @@ main{
     flex-basis: 1280px;
 }
 
-.tab:not(:first-child), .tab .icon{
-    color: gray;
-}
+.hide{
+    display:none !important;
+  }
 
 .tab:first-child::after{
     content: "";
@@ -27,7 +27,7 @@ main{
 .tab.available{
     cursor: pointer;
     transition: 0.3s ease-out;
-    color: #000;
+    color: #000 !important;
 }
 
 .available:hover, .active{
@@ -103,13 +103,47 @@ main{
     color: #fff;
 }
 
+.tasks-holder, .important-tasks-holder{
+    height: 286px;
+}
+
+.task{
+    cursor: pointer;
+    transition: background-color 0.3s ease-in;
+}
+.task:hover{
+    background-color: #f0ffff;
+    transition: 0.3s ease-out;
+}
+
+.done{
+    text-decoration: line-through;
+    color: gray;
+    background-color: #f0ffff;
+}
+
+.bi-circle{
+    color: gray;
+}
+
+.bi-check-circle-fill{
+    color: #0D6EFD;
+}
+
+.favorite-btn, .delete-btn{
+    right: 0;
+}
+
+.bi-star-fill{
+    color: #0D6EFD;
+}
+
 @media (max-width: 850px) {
     #body{
         display: block !important;
     }
     .row.bg-white{
         margin: 0 !important;
-        height: 100%;
     }
     .tab-title, .username {
         display: none;
@@ -142,5 +176,9 @@ main{
 
     .search-input{
         opacity: 1;
+    }
+    .tasks-holder, .important-tasks-holder{
+        height: 100%;
+        overflow: visible;
     }
 }
