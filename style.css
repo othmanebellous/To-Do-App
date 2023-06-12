@@ -144,6 +144,7 @@ main{
     }
     .row.bg-white{
         margin: 0 !important;
+        height: 100vh;
     }
     .tab-title, .username {
         display: none;
