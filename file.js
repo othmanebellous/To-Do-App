@@ -287,9 +287,9 @@ function addFilledStarToImportantTasks(){
 /*------------------------------------------------------Search-------------------------------------------------------*/
 
 searchInput.addEventListener("input", (e)=>{
-    let allTasks = document.querySelectorAll(".tasks-holder .task");
+    let allTasks = document.querySelectorAll(".tasks-holder .task");//get all tasks
         allTasks.forEach(taskEl => {
-            let isVisible = taskEl.querySelector(".task-text").innerHTML.toLowerCase().includes(e.target.value.toLowerCase());
+            let isVisible = taskEl.querySelector(".task-text").innerHTML.toLowerCase().includes(e.target.value.toLowerCase());//returns true or false
             taskEl.classList.toggle("hide", !isVisible)
             
         })
