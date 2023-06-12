@@ -166,7 +166,6 @@ main{
       }
 
       .search-form{
-        align-self: flex-end;
         margin-top: 21px;
         width: 100%;
       }

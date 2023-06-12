@@ -48,7 +48,7 @@ tabs.forEach((tab, index) =>{
     })
 });
 
-//pass the title of the active tab to h1
+//pass the title of the active tab to h1 on page load
 h1.innerHTML = activeTabTitle.innerHTML;
 
 /*--------------------------------------------------------Date------------------------------------------------------*/
@@ -71,6 +71,7 @@ if(localStorage.getItem("tasks") !== null){
     //Update the current number of tasks 
     dailyTasksCount.innerHTML = tasksArray.length;
 }else{
+    //Update the current number of tasks (in this case we have 0 tasks)
     dailyTasksCount.innerHTML = tasksArray.length;
 }
 
@@ -80,9 +81,6 @@ if(localStorage.getItem("importantTasks") !== null){
     addImportantTasksToPage(importantTasks);//Add tasks to important page
     //Update the current number of important tasks 
     importantTasksCount.innerHTML = importantTasks.length;
-
-    //add a filled star icon to important tasks
-       addFilledStarToImportantTasks()
 }else{
     importantTasksCount.innerHTML = importantTasks.length;
 }
@@ -105,9 +103,6 @@ function addTaskToArray(taskValue) {
     addTasksToLocalStorage(tasksArray);//pass the array of tasks as an argument to the addTasksToLocalStorage function
     //Update the current number of tasks
     dailyTasksCount.innerHTML = tasksArray.length;
-
-    //add a filled star icon to important tasks
-    addFilledStarToImportantTasks()
 }
 
 function addTasksToLocalStorage(array) {
@@ -181,11 +176,11 @@ function addTasksToPage(array) {
 
           //add tasks to important
           favBtn.addEventListener("click", ()=>{
-            if(importantTasks.some(task => task.id == favBtn.parentElement.getAttribute("data-id"))){
+            if(importantTasks.some(task => task.id == favBtn.parentElement.getAttribute("data-id"))){ //if the task already exists in important tasks
                 removeImportantTaskFromLocal(task.id); //remove task from importan tasks
                 favIcon.classList.remove("bi-star-fill"); //remove filled star icon
                 favIcon.classList.add("bi-star");//add normal star icon
-            }else{
+            }else{// else add the task to important tasks
                 const importanTask = {
                     id: favBtn.parentElement.getAttribute("data-id"), //create a unique id for each task
                     content: favBtn.parentElement.querySelector(".task-text").innerHTML, //pass the value inserted by the user to the content property
@@ -263,6 +258,7 @@ function addImportantTasksToPage(array){
                 }
           });
     })
+    addFilledStarToImportantTasks();
 }
 
 function removeImportantTaskFromLocal(id) {
