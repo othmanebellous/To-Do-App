@@ -66,13 +66,20 @@ let importantTasks= [];
 
 //Check if there is an array of tasks in local storage
 if(localStorage.getItem("tasks") !== null){
-    tasksArray = JSON.parse(localStorage.getItem("tasks")); //if yes pass the tasks in local storage to tasksArray
+    if (JSON.parse(localStorage.getItem('tasks')).length !== 0) {
+        tasksArray = JSON.parse(localStorage.getItem("tasks")); //if yes pass the tasks in local storage to tasksArray
     addTasksToPage(tasksArray);//Add tasks to page
     //Update the current number of tasks 
     dailyTasksCount.innerHTML = tasksArray.length;
+    }else{
+        dailyTasksCount.innerHTML = tasksArray.length;
+        noTasksAvailableText();//Show "You have no tasks today!"
+    }
+    
 }else{
     //Update the current number of tasks (in this case we have 0 tasks)
     dailyTasksCount.innerHTML = tasksArray.length;
+    noTasksAvailableText();//Show "You have no tasks today!"
 }
 
 //Check if there is an array of important tasks in local storage
@@ -146,6 +153,9 @@ function addTasksToPage(array) {
                 removeTaskFromLocalStorage(delBtn.parentElement.getAttribute("data-id")); //pass the unique value of the data-id attribute as an argument
                 removeImportantTaskFromLocal(delBtn.parentElement.getAttribute("data-id"));
                 addImportantTasksToPage(importantTasks);
+                if(tasksArray.length === 0){
+                    noTasksAvailableText();//Show "You have no tasks today!"
+                }
             }
         });
 
@@ -282,6 +292,13 @@ function addFilledStarToImportantTasks(){
             }
         })
     })
+}
+
+function noTasksAvailableText(){
+    let paragraph = document.createElement("p");
+    paragraph.innerHTML="You have no tasks today!";
+    paragraph.classList.add("text-center", "text-secondary", "mt-5");
+    tasksHolder.appendChild(paragraph);
 }
 
 /*------------------------------------------------------Search-------------------------------------------------------*/
