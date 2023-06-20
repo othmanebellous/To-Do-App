@@ -122,10 +122,6 @@ main{
     color: #fff;
 }
 
-.tasks-holder, .important-tasks-holder{
-    height: 286px;
-}
-
 .task{
     cursor: pointer;
     transition: background-color 0.3s ease-in;
@@ -207,7 +203,7 @@ main{
     .search-input{
         opacity: 1;
     }
-    .tasks-holder, .important-tasks-holder{
+    .tasks-holder{
         height: 100%;
         overflow: visible;
     }
