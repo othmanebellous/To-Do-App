@@ -7,12 +7,28 @@ body{
 
 main{
     flex-basis: 1280px;
+    height: 80%;
 }
 
 .hide{
     display:none !important;
   }
 
+  .aside, .right-side{
+    height: 100%;
+  }
+
+.user-image{
+    width: 60px;
+}
+
+.tab{
+    cursor: not-allowed;
+}
+
+.tab:first-child{
+    cursor: auto;
+}
 .tab:first-child::after{
     content: "";
     position: absolute;
@@ -33,6 +49,7 @@ main{
 .available:hover, .active{
     background-color: #f5f6f8;
     transition: 0.3s ease-in;
+    font-weight: bold;
 }
 
 .available::before{
@@ -71,7 +88,7 @@ main{
 .title {
     font-size: 53px;
 }
-.search-form {
+.search-holder {
     background-color: #543dc7;
     width: fit-content;
 }
@@ -79,8 +96,7 @@ main{
     width: 0;
     transition:width 0.5s ease-in;
 }
-.search-form:hover .input-wrapper{
-    width: 210px;
+.input-wrapper, .search-input{
     transition:width 0.5s ease-out;
 }
 .search-input{
@@ -89,13 +105,16 @@ main{
     transition: 0.5s ease-in;
 }
 
-.search-input::placeholder{
-    color: #fff;
+.input-visible{
+    width: 210px;
 }
 
-.search-form:hover .search-input{
+.input-visible .search-input{
     opacity: 1;
-    transition: 0.5s ease-out;
+}
+
+.search-input::placeholder{
+    color: #fff;
 }
 
 .search-input:focus{
@@ -113,6 +132,17 @@ main{
 }
 .task:hover{
     background-color: #f0ffff;
+    transition: 0.3s ease-out;
+}
+
+.delete-btn{
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s ease-in;
+}
+.task:hover .delete-btn{
+    opacity: 1;
+    visibility: visible;
     transition: 0.3s ease-out;
 }
 
@@ -165,12 +195,12 @@ main{
         font-size: 44px;
       }
 
-      .search-form{
+      .search-holder{
         margin-top: 21px;
         width: 100%;
       }
 
-      .search-form:hover .input-wrapper, .input-wrapper{
+      .input-wrapper{
         width: 100%;
     }
 
