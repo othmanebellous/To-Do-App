@@ -60,8 +60,10 @@ function displayTabContent(tab){
     }else{
         if(tabTitle.textContent == "My Day"){
             addTasksToPage(tasksArray);
+            addTaskBtn.classList.remove("hide");
         }else if(tabTitle.textContent == "Important"){
             addTasksToPage(importantTasksArray);
+            addTaskBtn.classList.add("hide");
         }
     }
 };
