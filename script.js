@@ -63,7 +63,7 @@ function displayTabContent(tab){
             addTaskBtn.classList.remove("hide");
         }else if(tabTitle.textContent == "Important"){
             addTasksToPage(importantTasksArray);
-            addTaskBtn.classList.add("hide");
+            addTaskBtn.classList.add("hide");//hide add task button on important page
         }
     }
 };
@@ -206,7 +206,7 @@ function deleteTask(delBtn){
 
 function removeTaskFromLocalStorage(id) {
     tasksArray = tasksArray.filter(task => task.id != id); 
-    addTasksToLocalStorage(tasksArray);
+    addTasksToLocalStorage(tasksArray);//update local storage
     addTasksToPage(tasksArray);
     //Update the current number of tasks
     dailyTasksCount.textContent = tasksArray.length;
@@ -221,6 +221,7 @@ function styleTaskOnClick(contentDiv){
         const checkIcon = contentDiv.querySelector(".bi");
         checkIcon.classList.toggle("bi-circle");
         checkIcon.classList.toggle("bi-check-circle-fill");
+        //update done property value
         tasksArray.forEach(task =>{
             if(task.id == taskId){
                 task.done == false ? task.done = true : task.done = false;
@@ -233,6 +234,7 @@ function styleTaskOnClick(contentDiv){
 function addTaskToImportant(favBtn){
     favBtn.addEventListener("click", ()=>{
         const taskId = favBtn.parentElement.getAttribute("data-id");
+        //update important propety value
         tasksArray.forEach(task =>{
             if(task.id == taskId){
                 task.important == false ? task.important = true : task.important = false;
