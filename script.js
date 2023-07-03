@@ -4,7 +4,7 @@ const userNameHolder = document.querySelector(".username");
 const tabs = document.querySelectorAll(".available"); 
 const allContent = document.querySelectorAll(".content");
 const heading = document.querySelector(".title");
-const activeTabTitle = document.querySelector(".active .tab-title");
+let activeTabTitle = document.querySelector(".active .tab-title");
 const date = document.querySelector(".date");
 const tasksHolder = document.querySelector(".tasks-holder");
 const addTaskBtn = document.querySelector(".add-btn");
@@ -13,20 +13,19 @@ const importantTasksCount = document.querySelector(".important-tasks");
 const searchBtn = document.querySelector(".search-btn");
 const searchInput = document.querySelector(".search-input");
 let tasksArray =[];
-let importantTasksArray =[];
 let filteredArray = [];
 
 /*----------------------------------------------------Username-----------------------------------------------------*/
 
-if(localStorage.getItem("username") != null){
+if(localStorage.getItem("username")){
     userNameHolder.textContent = localStorage.getItem("username");
 }else{
     let username = prompt("Please enter your name"); 
-if(username.trim() === ""){
+if(!username.trim()){
    alert("Username cannot be blank!");
    location.reload();
 }else{
-    username = username.charAt(0).toLocaleUpperCase() + username.slice(1).toLocaleLowerCase();
+    username = `${username.trim().charAt(0).toLocaleUpperCase()}${username.trim().slice(1).toLocaleLowerCase()}`;
     userNameHolder.textContent = username; 
     localStorage.setItem("username", username);
 }
@@ -40,30 +39,26 @@ tabs.forEach((tab, index) =>{
         tabs.forEach(tab =>{
             tab.classList.remove("active"); 
         });
-        tab.classList.add("active");// add active class to the current tab
-        heading.textContent = tab.querySelector(".tab-title").textContent; //use the title of the current tab as the main title
-        displayTabContent(tab);
+        tab.classList.add("active");
+        heading.textContent = tab.querySelector(".tab-title").textContent;
         activeTabTitle = tab.querySelector(".tab-title");
+        displayTabContent(activeTabTitle);
     })
 });
 
-function displayTabContent(tab){
-    const tabTitle = tab.querySelector(".tab-title")
-    if (searchInput.value.trim() != "") {
+function displayTabContent(tabTitle){
+    if (searchInput.value.trim()) {
+       filteredArray = tasksArray.filter(task => task.content.toLocaleLowerCase().includes(searchInput.value.trim().toLocaleLowerCase()));
         if(tabTitle.textContent == "My Day"){
-            filteredArray = tasksArray.filter(task => task.content.toLocaleLowerCase().includes(searchInput.value.trim().toLocaleLowerCase()));
             addTasksToPage(filteredArray);
         }else if(tabTitle.textContent == "Important"){
-            filteredArray = importantTasksArray.filter(task => task.content.toLocaleLowerCase().includes(searchInput.value.trim().toLocaleLowerCase()));
-            addTasksToPage(filteredArray);
+            addTasksToPage(filteredArray.filter(task => task.important));
         }
     }else{
         if(tabTitle.textContent == "My Day"){
             addTasksToPage(tasksArray);
-            addTaskBtn.classList.remove("hide");
         }else if(tabTitle.textContent == "Important"){
-            addTasksToPage(importantTasksArray);
-            addTaskBtn.classList.add("hide");//hide add task button on important page
+            addTasksToPage(tasksArray.filter(task => task.important));
         }
     }
 };
@@ -88,37 +83,29 @@ searchBtn.addEventListener("click", ()=>{
 });
 
 searchInput.addEventListener("input", ()=>{
-    if(activeTabTitle.textContent == "My Day"){
-        filteredArray = tasksArray.filter(task => task.content.toLocaleLowerCase().includes(searchInput.value.trim().toLocaleLowerCase()));
-        addTasksToPage(filteredArray);
-    }else if(activeTabTitle.textContent == "Important"){
-        filteredArray = importantTasksArray.filter(task => task.content.toLocaleLowerCase().includes(searchInput.value.trim().toLocaleLowerCase()));
-        addTasksToPage(filteredArray);
-    }
+    displayTabContent(activeTabTitle);
 });
-
 
 /*--------------------------------------------------------Tasks-----------------------------------------------------*/
 
-if(localStorage.getItem("tasks") !== null){
+if(localStorage.getItem("tasks")){
     if (JSON.parse(localStorage.getItem('tasks')).length !== 0) {
         tasksArray = JSON.parse(localStorage.getItem("tasks")); 
     addTasksToPage(tasksArray);
     //Update the current number of tasks 
     dailyTasksCount.textContent = tasksArray.length;
     //Update important tasks
-    importantTasksArray = tasksArray.filter(task => task.important == true);
-    importantTasksCount.textContent = importantTasksArray.length;
+    importantTasksCount.textContent = tasksArray.filter(task => task.important).length;
 
     }else{
         dailyTasksCount.textContent = tasksArray.length;
-        importantTasksCount.textContent = importantTasksArray.length;
+        importantTasksCount.textContent = tasksArray.filter(task => task.important).length;
         noTasksMessage();//Show "You have no tasks today!"
     }
     
 }else{
     dailyTasksCount.textContent = tasksArray.length;
-    importantTasksCount.textContent = importantTasksArray.length;
+    importantTasksCount.textContent = tasksArray.filter(task => task.important).length;
     noTasksMessage();
 }
 
@@ -132,7 +119,7 @@ function noTasksMessage(){
 //Add a new task
 addTaskBtn.addEventListener("click", ()=>{
     let taskValue = prompt("Enter new task");
-    if (taskValue != null && taskValue.trim() != "") { 
+    if (taskValue && taskValue.trim()) { 
         addTaskToArray(taskValue); 
     }
 });
@@ -145,7 +132,7 @@ function addTaskToArray(taskValue) {
         done: false,
     }
     tasksArray.unshift(task); 
-    addTasksToPage(tasksArray); 
+    displayTabContent(activeTabTitle);
     addTasksToLocalStorage(tasksArray);
     //Update the current number of tasks
     dailyTasksCount.textContent = tasksArray.length;
@@ -207,24 +194,19 @@ function deleteTask(delBtn){
 function removeTaskFromLocalStorage(id) {
     tasksArray = tasksArray.filter(task => task.id != id); 
     addTasksToLocalStorage(tasksArray);//update local storage
-    addTasksToPage(tasksArray);
+    displayTabContent(activeTabTitle);
     //Update the current number of tasks
     dailyTasksCount.textContent = tasksArray.length;
-    importantTasksArray = tasksArray.filter(task => task.important == true);
-    importantTasksCount.textContent = importantTasksArray.length;
+    importantTasksCount.textContent = tasksArray.filter(task => task.important).length;
 }
 
 function styleTaskOnClick(contentDiv){
     contentDiv.addEventListener("click", ()=>{
-        contentDiv.parentElement.classList.toggle("done");
         const taskId = contentDiv.parentElement.getAttribute("data-id");
-        const checkIcon = contentDiv.querySelector(".bi");
-        checkIcon.classList.toggle("bi-circle");
-        checkIcon.classList.toggle("bi-check-circle-fill");
-        //update done property value
         tasksArray.forEach(task =>{
             if(task.id == taskId){
-                task.done == false ? task.done = true : task.done = false;
+                task.done = !task.done;
+                addStyleToDoneTasks(task.done, contentDiv)
             }
         })
         addTasksToLocalStorage(tasksArray);
@@ -237,37 +219,36 @@ function addTaskToImportant(favBtn){
         //update important propety value
         tasksArray.forEach(task =>{
             if(task.id == taskId){
-                task.important == false ? task.important = true : task.important = false;
+                task.important = !task.important;
+                addFilledStarToImportantTasks(task.important, favBtn.querySelector(".bi"))
             }
         })
         addTasksToLocalStorage(tasksArray);
-        toggleBlueStar(favBtn);
-        importantTasksArray = tasksArray.filter(task => task.important == true);
-        importantTasksCount.textContent = importantTasksArray.length;
-        if(activeTabTitle.textContent == "Important"){
-            addTasksToPage(importantTasksArray);
-        }
+        importantTasksCount.textContent = tasksArray.filter(task => task.important).length;
+        displayTabContent(activeTabTitle);
     })
-}
-
-function toggleBlueStar(favBtn){
-        const favIcon = favBtn.querySelector(".bi");
-        favIcon.classList.toggle("bi-star");
-        favIcon.classList.toggle("bi-star-fill");
 }
 
 function addFilledStarToImportantTasks(important, favIcon){
     if (important) {
-        favIcon.classList.toggle("bi-star");
-        favIcon.classList.toggle("bi-star-fill");
+        favIcon.classList.remove("bi-star");
+        favIcon.classList.add("bi-star-fill");
+    }else{
+        favIcon.classList.remove("bi-star-fill");
+        favIcon.classList.add("bi-star");
     }
 };
 
 function addStyleToDoneTasks(isDone, contentDiv){
-    if (isDone) {
-        contentDiv.parentElement.classList.toggle("done");
+    
         const checkIcon = contentDiv.querySelector(".bi");
-        checkIcon.classList.toggle("bi-circle");
-        checkIcon.classList.toggle("bi-check-circle-fill");
+    if (isDone) {
+        contentDiv.parentElement.classList.add("done");
+        checkIcon.classList.remove("bi-circle");
+        checkIcon.classList.add("bi-check-circle-fill");
+    }else{
+        contentDiv.parentElement.classList.remove("done");
+        checkIcon.classList.add("bi-circle");
+        checkIcon.classList.remove("bi-check-circle-fill");
     }
 }
