@@ -3,8 +3,8 @@
 const userNameHolder = document.querySelector(".username");
 const tabs = document.querySelectorAll(".available"); 
 const allContent = document.querySelectorAll(".content");
-const h1 = document.querySelector(".title");
-let activeTabTitle = document.querySelector(".active .tab-title");
+const heading = document.querySelector(".title");
+const activeTabTitle = document.querySelector(".active .tab-title");
 const date = document.querySelector(".date");
 const tasksHolder = document.querySelector(".tasks-holder");
 const addTaskBtn = document.querySelector(".add-btn");
@@ -41,7 +41,7 @@ tabs.forEach((tab, index) =>{
             tab.classList.remove("active"); 
         });
         tab.classList.add("active");// add active class to the current tab
-        h1.textContent = tab.querySelector(".tab-title").textContent; //use the title of the current tab as the main title
+        heading.textContent = tab.querySelector(".tab-title").textContent; //use the title of the current tab as the main title
         displayTabContent(tab);
         activeTabTitle = tab.querySelector(".tab-title");
     })
@@ -68,8 +68,8 @@ function displayTabContent(tab){
     }
 };
 
-//pass the title of the active tab to h1 on page load
-h1.textContent = activeTabTitle.textContent;
+//pass the title of the active tab to heading on page load
+heading.textContent = activeTabTitle.textContent;
 
 /*--------------------------------------------------------Date------------------------------------------------------*/
 //Display date
