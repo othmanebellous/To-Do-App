@@ -119,7 +119,7 @@ function noTasksMessage(){
 //Add a new task
 addTaskBtn.addEventListener("click", ()=>{
     let taskValue = prompt("Enter new task");
-    if (taskValue && taskValue.trim()) { 
+    if (taskValue.trim()) { 
         addTaskToArray(taskValue); 
     }
 });
